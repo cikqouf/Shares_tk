@@ -4,7 +4,8 @@ from bs4 import BeautifulSoup
 import requests
 import time
 import random
-from stock_framework import stock_get_code
+from stock_framework.stock_get import stock_get_code
+from stock_framework.chart_matplotlib_ver import technic_chart_matplotlib
 
 
 def cate_quick_check():
@@ -84,6 +85,8 @@ def cate_quick_check():
         stock_get_code(_code, str(20220101))
         tmppd = pd.read_csv('csv/' + _code + '.csv')
         short_name = tmppd.iloc[1, 2]
+        # generate snapshot
+        technic_chart_matplotlib(dayline='csv/' + _code + '.csv')
         # print info
         delta_t = random.random()*5 + random.random()*3
         print(_code, short_name, '\t', '开:', _o, '高:', _h, '低:', _l,

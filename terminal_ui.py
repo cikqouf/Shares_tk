@@ -12,7 +12,7 @@ def terminal_ui():
         sf.stock_get()
         terminal_ui()
     elif x == 2:
-        sf.technic_chart_matplotlib()
+        sf.technic_chart_matplotlib(dayline='')
         terminal_ui()
     elif x == 3:
         sf.technic_chart_plotly()

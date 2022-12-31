@@ -9,7 +9,7 @@ from matplotlib.ticker import MultipleLocator
 from bs4 import BeautifulSoup
 
 
-def technic_chart_matplotlib():
+def technic_chart_matplotlib(dayline):
 
     def csv_wash(csvpath):
         """Return dayline dataframe, dealing with the .csv fetched
@@ -229,8 +229,13 @@ def technic_chart_matplotlib():
 
     # ---------------------------------------
     """begin"""
-    print('Input csv path: ', end='')
-    dayline = csv_wash(input())
+    if dayline == '':
+        show_switch = 1
+        print('Input csv path: ', end='')
+        dayline = csv_wash(input())
+    else:
+        show_switch = 0
+        dayline = csv_wash(csvpath=dayline)
     stock = stock_ohlcva(dayline)
     factor = stock_factor(mavn=(5, 10, 20, 60),
                           boxn=(9, 10),
@@ -376,47 +381,6 @@ def technic_chart_matplotlib():
     # grid
     plt.grid(True, which='both', ls='dashed')
     N = 0
-    if N == 1:
-        infooo = []
-        asset = [1 for _ in range(len(stock.close))]
-        cashfree = 1
-        hold_count = 0
-        for i in range(0, len(asset) - 1):
-            if (b1[i] == 'B1' or b2[i] == 'B2') and cashfree == 1:
-                asset[i + 1] = asset[i]*(stock.close[i + 1]/stock.close[i])
-                cashfree = 0
-                hold_count += 1
-                infooo.append('买入')
-            elif (s1[i] == 'S1' or s2[i] == 'S2') \
-                    and\
-                    cashfree == 0 \
-                    and \
-                    (factor.mav_diff[i] - factor.mav_diff[i - 1]) <= \
-                    (factor.mav_diff[i - 1] - factor.mav_diff[i - 2]):  # 卖点保守化
-                asset[i + 1] = asset[i]
-                cashfree = 1
-                hold_count = 0
-                infooo.append('卖出')
-            elif cashfree == 0:
-                if asset[i] / asset[i - hold_count] < .62:  # 注: 可以加时间限制，如3天内亏损超过某一阈值
-                    asset[i + 1] = asset[i]
-                    cashfree = 1
-                    hold_count = 0
-                    infooo.append('止损')
-                else:
-                    asset[i + 1] = asset[i]*(stock.close[i + 1]/stock.close[i])
-                    cashfree = 0
-                    hold_count += 1
-                    infooo.append('')
-            elif cashfree == 1:
-                asset[i + 1] = asset[i]
-                cashfree = 1
-                hold_count = 0
-                infooo.append('')
-        infooo.append('')
-        plt.plot(x, asset)
-        for i in range(len(stock.close)):
-            plt.text(x=i, y=asset[i], s=infooo[i], color='red')
     plt.bar(x, stock.vol)
     # tick labels date by month
     plt.xticks(ticks=np.arange(0, len(dayline), step=20),
@@ -449,4 +413,6 @@ def technic_chart_matplotlib():
     plt.title(dayline.iloc[1, 2])
     plt.tight_layout()
     print('done')
-    plt.show()
+    plt.savefig(dayline.iloc[1, 2] + '.png')
+    if show_switch == 1:
+        plt.show()
