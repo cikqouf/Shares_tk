@@ -229,6 +229,8 @@ def technic_chart_matplotlib(dayline):
 
     # ---------------------------------------
     """begin"""
+    import matplotlib.style as mplstyle
+    mplstyle.use('fast')
     if dayline == '':
         show_switch = 1
         print('Input csv path: ', end='')
@@ -380,7 +382,6 @@ def technic_chart_matplotlib(dayline):
     """净值曲线"""
     # grid
     plt.grid(True, which='both', ls='dashed')
-    N = 0
     plt.bar(x, stock.vol)
     # tick labels date by month
     plt.xticks(ticks=np.arange(0, len(dayline), step=20),
