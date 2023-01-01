@@ -9,40 +9,28 @@ from stock_framework.chart_matplotlib_ver import technic_chart_matplotlib
 
 
 def cate_quick_check():
-    category = ['*',
-                'A 农林牧渔',
-                'B 采矿业',
-                'C 制造业',
-                'D 水电煤气',
-                'E 建筑业',
-                'F 批发零售',
-                'G 运输仓储',
-                'H 住宿餐饮',
-                'I 信息技术',
-                'J 金融业',
-                'K 房地产',
-                'L 商务服务',
-                'M 科研服务',
-                'N 公共环保',
-                'O 居民服务',
-                'P 教育',
-                'Q 卫生',
-                'R 文化传播',
-                'S 综合']
-    data = pd.read_csv('stock_csv/all_sz_list.csv',
-                       dtype={'all_sz_list': str, '自选': str}
-                       )
-    data_1 = [data.iloc[i, 0] for i in range(len(data))]
-    data_2 = [data.iloc[i, 1] for i in range(len(data))]
-    data_3 = [str(data.iloc[i, 2]) for i in range(len(data))]
+    category = ['*']
+    data_sz = pd.read_csv('stock_csv/all_sz_list.csv',
+                          dtype={'all_sz_list': str, '自选': str}
+                          )
+    data_sh = pd.read_csv('stock_csv/all_sh_list.csv',
+                          dtype={'all_sh_list': str, '自选': str}
+                          )
+    data_1 = [data_sz.iloc[i, 0] for i in range(len(data_sz))]
+    data_2 = [str(data_sz.iloc[i, 1]) for i in range(len(data_sz))]
+
+    data_3 = [data_sh.iloc[i, 0] for i in range(len(data_sh))]
+    data_4 = [str(data_sh.iloc[i, 1]) for i in range(len(data_sh))]
+
     ind_1 = []
-    print('输入行业代码: ', end='')
+    print('输入自选代码: ', end='')
     k = int(input())
-    for i in range(len(data)):
-        if data_3[i] == category[k] and k == 0:
+    for i in range(len(data_sz)):
+        if data_2[i] == category[k]:
             ind_1.append(data_1[i])
-        elif data_2[i] == category[k] and k!= 0:
-            ind_1.append(data_1[i])
+    for i in range(len(data_sh)):
+        if data_4[i] == category[k]:
+            ind_1.append(data_3[i])
     print(category[k], '共有', len(ind_1), '个')
     print('connecting to server...')
     random.shuffle(ind_1)
@@ -82,11 +70,11 @@ def cate_quick_check():
             _volume = float(_volume)*10e1
         _amo = float(_amo)
         # get stock name and history data
-        stock_get_code(_code, str(20220101))
-        tmppd = pd.read_csv('csv/' + _code + '.csv')
+        stock_get_code(str(_code), str(20220101))
+        tmppd = pd.read_csv('csv/' + str(_code) + '.csv')
         short_name = tmppd.iloc[1, 2]
         # generate snapshot
-        technic_chart_matplotlib(dayline='csv/' + _code + '.csv')
+        technic_chart_matplotlib(dayline='csv/' + str(_code) + '.csv')
         # print info
         delta_t = random.random()*5 + random.random()*3
         print(_code, short_name, '\t', '开:', _o, '高:', _h, '低:', _l,
@@ -96,6 +84,6 @@ def cate_quick_check():
         elif _c > _o:
             print('red')
         else:
-            print('-')
+            print('---')
         print('请等待', round(delta_t, 2), '秒')
         time.sleep(delta_t)
