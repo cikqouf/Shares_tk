@@ -1,21 +1,15 @@
-import re
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.ticker import MultipleLocator
+import configparser as cpr
 
 
-def technic_chart_matplotlib(dayline):
-
-    def csv_wash(csvpath):
-        """Return dayline dataframe, dealing with the .csv fetched
-        from NetEase source."""
-        # fix path isuue
-        csvpath = re.sub(r'["& \']', "", csvpath)
-        dayline = pd.read_csv(csvpath)
-        # sort by time series
-        dayline.sort_values(by='date', inplace=True)
-        return dayline
+def technic_chart_matplotlib(csv_path):
+    # 读取配置文件
+    config = cpr.ConfigParser()
+    config.read('config.ini', encoding='utf-8')
+    loc = config.items('csv_data_column')  # 获取数据列位置
 
     class stock_ohlcva:
         """A class contains a stock's ohlcva"""
@@ -28,19 +22,19 @@ def technic_chart_matplotlib(dayline):
         amo = []
 
         def __init__(self, dayline):
-            # make ohlc in a list, including time series, vol and amo
+            # make ohlc in a list, including time, vol and amo
             """
             attention, pandas' dataframe cannot sort values by property
             'loc', must using 'iloc' for sorted value.
             """
             for i in range(len(dayline)):
-                self.open.append(dayline.iloc[i, 2])
-                self.high.append(dayline.iloc[i, 3])
-                self.low.append(dayline.iloc[i, 4])
-                self.close.append(dayline.iloc[i, 5])
-                self.time.append(dayline.iloc[i, 0])
-                self.vol.append(dayline.iloc[i, 7])
-                self.amo.append(dayline.iloc[i, 8])
+                self.open.append(dayline.iloc[i, int(loc[0][1])])
+                self.high.append(dayline.iloc[i, int(loc[1][1])])
+                self.low.append(dayline.iloc[i, int(loc[2][1])])
+                self.close.append(dayline.iloc[i, int(loc[3][1])])
+                self.time.append(dayline.iloc[i, int(loc[4][1])])
+                self.vol.append(dayline.iloc[i, int(loc[5][1])])
+                self.amo.append(dayline.iloc[i, int(loc[6][1])])
             # ------------------------------
 
     class stock_factor(stock_ohlcva):
@@ -181,13 +175,8 @@ def technic_chart_matplotlib(dayline):
     """initial stock factor and strategy"""
     import matplotlib.style as mplstyle
     mplstyle.use('fast')
-    if dayline == '':
-        show_switch = 1
-        print('Input csv path: ', end='')
-        dayline = csv_wash(input())
-    else:
-        show_switch = 0
-        dayline = csv_wash(csvpath=dayline)
+    dayline = pd.read_csv(csv_path)
+    dayline.sort_values(by=config['others']['date_name'], inplace=True) # 按日期排序
     stock = stock_ohlcva(dayline)
     factor = stock_factor(mavn=(5, 10, 20, 60),
                           boxn=(9, 10),
@@ -366,5 +355,4 @@ def technic_chart_matplotlib(dayline):
     plt.tight_layout()
     print('done')
     plt.savefig(dayline.iloc[1, 1] + '.png')
-    if show_switch == 1:
-        plt.show()
+    plt.show()
