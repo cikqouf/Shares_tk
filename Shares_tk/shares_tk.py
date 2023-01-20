@@ -35,13 +35,10 @@ class Stock_tk():
         config = cpr.ConfigParser()
         config.read('config.ini', encoding='utf-8')
         # Initial config
-        sec_ls: list[str] = ['csv_data_column',
-                             'indicator', 'strategy', 'others']
+        sec_ls: list[str] = ['csv_data_column', 'others']
         # -------------------------
         cdc_ls: list[str] = ['open', 'high',
                              'low', 'close', 'vol', 'amo', 'time']
-        ind_ls: list[str] = ['mav', 'mav_diff']
-        stg_ls: list[str] = ['buy', 'sell', 'add', 'sub']
         ots_ls: list[str] = ['name', 'code']
         if config.sections() != sec_ls:
             for sec in sec_ls:
@@ -50,10 +47,6 @@ class Stock_tk():
             # -------------------------------
             for ls in cdc_ls:
                 config.set('csv_data_column', ls, '')
-            for ls in ind_ls:
-                config.set('indicator', ls, '')
-            for ls in stg_ls:
-                config.set('strategy', ls, '')
             for ls in ots_ls:
                 config.set('others', ls, '')
         # -----------------------------------------------------
