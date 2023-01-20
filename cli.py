@@ -12,7 +12,7 @@ def usage_s():
     print("python cli.py -v[--version] 查看版本号")
     print("python cli.py -h[--help] 查看本帮助")
     print("------------------------------------------------")
-    print("python cli.py -in[--init] 初始化csv文件的数据数据位置")
+    print("python cli.py -i[--init] 初始化csv文件的数据数据位置")
     print("位置从0开始选取")
     print("------------------------------------------------")
     print("python cli.py -f[--file] your_csv_file 绘制快照")
