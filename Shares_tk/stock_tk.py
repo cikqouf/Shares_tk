@@ -1,6 +1,5 @@
 import configparser as cpr
 
-
 class Stock_tk():
     """A `stock_tk()` has seven basic attributes:
 
@@ -35,10 +34,13 @@ class Stock_tk():
         config = cpr.ConfigParser()
         config.read('config.ini', encoding='utf-8')
         # Initial config
-        sec_ls: list[str] = ['csv_data_column', 'others']
+        sec_ls: list[str] = ['csv_data_column',
+                             'indicator', 'strategy', 'others']
         # -------------------------
         cdc_ls: list[str] = ['open', 'high',
                              'low', 'close', 'vol', 'amo', 'time']
+        ind_ls: list[str] = ['mav', 'mav_diff']
+        stg_ls: list[str] = ['buy', 'sell', 'add', 'sub']
         ots_ls: list[str] = ['name', 'code']
         if config.sections() != sec_ls:
             for sec in sec_ls:
@@ -47,6 +49,10 @@ class Stock_tk():
             # -------------------------------
             for ls in cdc_ls:
                 config.set('csv_data_column', ls, '')
+            for ls in ind_ls:
+                config.set('indicator', ls, '')
+            for ls in stg_ls:
+                config.set('strategy', ls, '')
             for ls in ots_ls:
                 config.set('others', ls, '')
         # -----------------------------------------------------
@@ -96,10 +102,10 @@ class Stock_tk():
             self.amo.append(float(data[int(config['csv_data_column']['amo'])]))
             self.t.append(data[int(config['csv_data_column']['time'])])
 
-    def indicator(self, **kwargs: tuple) -> dict[str, list]:
+    def indicator(self, **kwargs: list) -> dict[str, list]:
         """indicator methods:
 
-        usage(example)::
+        usage::
 
         ```
         stock = stock_tk()
@@ -113,15 +119,11 @@ class Stock_tk():
 
         ```
             print(ind['mav'])
-
-            [[None, None, None, None, 3.842, 3.816, 3.804, 3.804, 3.7880000000000003], 
-            [None, None, None, None, None, None, None, None, None], 
-            [None, None, None, None, None, None, None, None, None]]
         ```
         """
 
         def mav(*args: int) -> list[float]:
-            """args should be a tuple contains mav periods
+            """args expects a tuple contains mav periods
 
             Returns:
                 list[float]: a list contains mav every period
@@ -135,7 +137,7 @@ class Stock_tk():
             return ls
 
         def mav_diff(*args: int) -> list[float]:
-            """args should be a pair of tuple, like
+            """args expects a pair of tuple, like
             `((a, b), (c, d), ...)`
 
             Returns:
@@ -161,3 +163,4 @@ class Stock_tk():
                 kwargs[k] = mav_diff(*v)
 
         return kwargs
+    
