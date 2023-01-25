@@ -48,7 +48,7 @@ class Indicator_tk():
         'name': 'rsv',
         'cal': [100,
             r""\"
-            (stock.c[i] - min(stock.l[i-p+1 :i]))/(max(stock.h[i-p+1:i]) - min(stock.l[i-p+1:i]))*100
+            (stock.c[i] - min(stock.l[i-p+1 :i+1]))/(max(stock.h[i-p+1:i+1]) - min(stock.l[i-p+1:i+1]))*100
             ""\"]}
         ind.set_cycle_ind(**ind_dict)
 
@@ -56,7 +56,7 @@ class Indicator_tk():
             'name': 'kdj_k',
             'cal': [100,
                     r""\"
-        sum(kwargs['ind_rsv'][r][i-p+1:i])/p
+        sum(kwargs['ind_rsv'][r][i-p+1:i+1])/p
             ""\"]}
         ind.set_cycle_ind(**ind_dict)
         ...
