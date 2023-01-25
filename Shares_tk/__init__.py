@@ -5,7 +5,7 @@ usage::
 
     import Shares_tk as stk
     stock = Stock_tk()
-    stock.read('your_csv_file')
+    stock.read('your_csv_file_path')
 
 """
 from Shares_tk.stock_tk import Stock_tk

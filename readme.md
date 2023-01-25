@@ -37,7 +37,7 @@ ind = stk.Indicator()
 
 ind_args = {
     'name': 'your_ind_name', # 指标的名字
-    'cal': [cal1:str,cal2_str] 
+    'cal': [cal1:str,cal2:str] 
     # cal1 是第一个完整周期出现之前的计算式
     # cal2 是之后的每个周期的计算式
 }
