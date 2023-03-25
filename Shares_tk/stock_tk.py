@@ -1,23 +1,25 @@
 import configparser as cpr
 
-class Stock_tk():
-    """A `stock_tk()` has seven basic attributes:
 
-    `o` stands for open price,
-    `h` stands for high price,
-    `l` stands for low price,
-    `c` stands for close price,
-    `vol` stands for deal volume,
-    `amo` stands for deal amount,
-    and `t` stands for deal time in a period.
-    """
-    o: list[float] = []
-    h: list[float] = []
-    l: list[float] = []
-    c: list[float] = []
-    vol: list[float] = []
-    amo: list[float] = []
-    t: list[str] = []
+class Stock_tk():
+    def __init__(self) -> None:
+        """A `stock_tk()` has seven basic attributes:
+
+        `o` stands for open price,
+        `h` stands for high price,
+        `l` stands for low price,
+        `c` stands for close price,
+        `vol` stands for deal volume,
+        `amo` stands for deal amount,
+        and `t` stands for deal time in a period.
+        """
+        self.o: list[float] = []
+        self.h: list[float] = []
+        self.l: list[float] = []
+        self.c: list[float] = []
+        self.vol: list[float] = []
+        self.amo: list[float] = []
+        self.t: list[str] = []
 
     def read(self, file: str) -> None:
         """read a csv file to get a stock's basic data
@@ -57,27 +59,35 @@ class Stock_tk():
                 config.set('others', ls, '')
         # -----------------------------------------------------
         item_tuple = (("open",
+                       "Open",
                       "o",
                        "开盘价"),
                       ("high",
+                       "High",
                       "h",
                        "最高价"),
                       ("low",
+                       "Low",
                       "l",
                        "最低价"),
                       ("close",
+                       "Close",
                       "c",
                        "收盘价"),
                       ("volume",
+                       "Volume",
                       "vol",
                        "v",
                        "成交量"),
                       ("amount",
+                       "Amount",
                       "amo",
                        "a",
                        "成交额"),
                       ("date",
+                       "Date",
                       "time",
+                       "Time",
                        "日期"))
         # set csv_data_column
         # `iter` is a mapping for `csv_data_column` index
@@ -131,7 +141,8 @@ class Stock_tk():
             ls: list[float] = [[None
                                if i < args[k] - 1
                                 else
-                                sum(self.c[(i - args[k] + 1): (i + 1)]) / args[k]
+                                sum(self.c[(i - args[k] + 1)
+                                    : (i + 1)]) / args[k]
                                 for i in range(len(self.c))]
                                for k in range(len(args))]
             return ls
@@ -163,4 +174,3 @@ class Stock_tk():
                 kwargs[k] = mav_diff(*v)
 
         return kwargs
-    
