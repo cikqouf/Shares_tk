@@ -14,7 +14,7 @@
 
 ### 快速上手
 
-```
+```python
 import Shares_tk as stk
 stock = stk.Stock_tk()
 stock.read('your_csv_file_path') # here to get a stock's ohlcvat data
@@ -30,7 +30,8 @@ plt.show()
 ```
 
 指标设置繁复多样, 本模块提供一个算周期指标的模板, 用法如下
-```
+
+```python
 import Shares_tk as stk
 
 ind = stk.Indicator()
@@ -47,7 +48,7 @@ ind.set_cycle_ind(**ind_args)
 
 如设置一个rsv指标
 
-```
+```python
 import Shares_tk stk
 
 ind = stk.Indicator()
@@ -81,7 +82,8 @@ print(ind_rsv[1])
 由于`own_ind`文件夹下的`.py`文件是模板生成的, 所以有几个关键字注意小心使用
 
 `ls` 是`.py`文件中方法的返回值, 考虑有些指标需要用到指标本身的数据, 可以这样实现
-```
+
+```python
 ...
 ind_args = {
     'name' = 'ind_a',
@@ -92,12 +94,14 @@ ind_args = {
 }
 ...
 ```
+
 这样运行`ind_a`方法后的内容如下
 
 `[[10, 10, 10, ..., 10 #第一个周期结束, 5, 2.5, ...], # 其他周期[...],[...],[],...]`
 
 `r`是参数的行指标, `i`是参数的列指标, 如
-```
+
+```python
 ...
 ind_args = {
     'name' = 'ind_a',
@@ -108,9 +112,10 @@ ind_args = {
 }
 ...
 ```
+
 然后调用生成的`ind_a.py`中的`ind_a`方法
 
-```
+```python
 from own_ind.ind_a import ind_a
 from own_ind.rsv import rsv
 import Shares_tk as stk
@@ -127,7 +132,8 @@ ind_a = ind_a(stock=stock,
 ```
 
 `p`是周期的值, 如计算移动平均收盘价
-```
+
+```python
 ...
 ind_args = {
     'name': 'mav',
