@@ -139,7 +139,7 @@ ind_args = {
     'name': 'mav',
     'cal': [None,
     r"""
-    stock.c[i-p+1:i+1]/p
+    sum(stock.c[i-p+1:i+1])/p
     """]
 }
 ...
